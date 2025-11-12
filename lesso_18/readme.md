@@ -24,13 +24,13 @@ Train: 7920 | Val: 1980 | Test: 1100
 | Метрики        | "Accuracy, Precision, Recall, F1 (macro), Loss"         |
 
 ## **Общее сравнение моделей**
-| Модель                                                             | Test Loss | Val Accuracy | Test Accuracy | TTA Test Accuracy | Precision | Recall | F1    | Общее время |
-|--------------------------------------------------------------------|-----------|--------------|---------------|-------------------|-----------|--------|-------|-------------|
-| EfficientNet-B0                                                    | 0.755     | 78.38%       | 76.45%        |                   | 0.769     | 0.765  | 0.764 | 44.2 min    |
-| EfficientNet-B0(fine-tuning + label smoothing + weighted sampling) | 1.081     | 81.87%       | 79.00%        | 82.09%            | 0.792     | 0.790  | 0.790 | 74.3 min    |
-| EfficientNet-B3(fine-tuning + label smoothing + weighted sampling) | 1.001     | 84.34%       | 82.00%        | 84.82%            | 0.821     | 0.820  | 0.820 | 119.9 min   |
-| ConvNeXt_V2(fine-tuning + label smoothing + weighted sampling)     | 0.849     | 88.38%       | 88.55%        | 89.18%            | 0.890     | 0.885  | 0.887 | 158.1 min   |
-| DaViT_Tiny(fine-tuning + label smoothing + weighted sampling)      |           |              |               |                   |           |        |       |             |
+| Модель                                                             | Test Loss | Val Accuracy  | Test Accuracy | TTA Test Accuracy | Precision | Recall | F1    | Общее время |
+|--------------------------------------------------------------------|-----------|---------------|---------------|-------------------|-----------|--------|-------|-------------|
+| EfficientNet-B0                                                    | 0.755     | 78.38%        | 76.45%        |                   | 0.769     | 0.765  | 0.764 | 44.2 min    |
+| EfficientNet-B0(fine-tuning + label smoothing + weighted sampling) | 1.081     | 81.87%        | 79.00%        | 82.09%            | 0.792     | 0.790  | 0.790 | 74.3 min    |
+| EfficientNet-B3(fine-tuning + label smoothing + weighted sampling) | 1.001     | 84.34%        | 82.00%        | 84.82%            | 0.821     | 0.820  | 0.820 | 119.9 min   |
+| ConvNeXt_V2(fine-tuning + label smoothing + weighted sampling)     | 0.849     | 88.38%        | 88.55%        | 89.18%            | 0.890     | 0.885  | 0.887 | 158.1 min   |
+| DaViT_Tiny(fine-tuning + label smoothing + weighted sampling)      | 0.713     | 92.88%        | 92.64%        |  92.82%           | 0.927     | 0.926  | 0.926 | 616.7 min   |
 
 ## **EfficientNet-B0**
 > **best_efficientnet_B0_food11.pth**
@@ -332,35 +332,28 @@ criterion = nn.CrossEntropyLoss(label_smoothing=0.1, weight=class_weights_tensor
 ## **DaViT_Tiny(fine-tuning + label smoothing + weighted sampling)**
 > **DaViT_Tiny_food11.pth**
 
-В ПРОЦЕССЕ
-
 | Test Loss | Val Accuracy | Test Accuracy | Precision | Recall | F1    | Общее время |
 |-----------|--------------|---------------|-----------|--------|-------|-------------|
-|           | 88.38%       | 88.55%        | 0.890     | 0.885  | 0.887 | 158.1 min   |
-
-
-### Аугментации (train)
-```python
-```
+|  0.713    | 92.88%       | 92.64%        | 0.927     | 0.926  | 0.926 | 616.7 min   |
 
 ### Матрица ошибок
-![](images/ConvNeXt_V2.png)
+![](images/DaViT_Tiny.png)
 
 ### Ход обучения
 | TensorBoard                     | TensorBoard                     |
 |---------------------------------|---------------------------------|
-| ![](images/ConvNeXt_V2/1.1.png) | ![](images/ConvNeXt_V2/1.2.png) |
-| ![](images/ConvNeXt_V2/2.2.png) | ![](images/ConvNeXt_V2/2.3.png) |
-| ![](images/ConvNeXt_V2/4.png)   | ![](images/ConvNeXt_V2/5.png)   |
-| ![](images/ConvNeXt_V2/3.png)   |                                 |
+| ![](images/DaViT_Tiny/1.1.png) | ![](images/DaViT_Tiny/1.2.png) |
+| ![](images/DaViT_Tiny/2.2.png) | ![](images/DaViT_Tiny/2.3.png) |
+| ![](images/DaViT_Tiny/4.png)   | ![](images/DaViT_Tiny/5.png)   |
+| ![](images/DaViT_Tiny/3.png)   |                                 |
 
 ### TTA(5 аугментаций)
-TTA Test Accuracy: 
+TTA Test Accuracy: 92.82%
 
 > **TTA (Test Time Augmentation) — применение нескольких аугментаций к одному изображению на этапе инференса, усреднение предсказаний.**
 
 ### Матрица ошибок
-![](images/ConvNeXt_V2_TTA.png)
+![](images/DaViT_Tiny_TTA.png)
 
 ```python
 transforms_list = [
@@ -377,8 +370,4 @@ transforms_list = [
 3. **Поворот на +10°** (`RandomRotation(10)`)
 4. **Изменение яркости и контраста** (`ColorJitter(brightness=0.1, contrast=0.1)`)
 5. **Аффинное преобразование с масштабированием** (`RandomAffine(degrees=5, scale=(0.95, 1.05))`)
-
-### Ключевые изменения
-
-
 ---
